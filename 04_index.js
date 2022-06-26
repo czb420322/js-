@@ -92,35 +92,36 @@ list.forEach(item => {
 })
 }
 
-loop(list, data, '0')
+// loop(list, data, '0')
 
-console.log(data)
+// console.log(data)
 
 // @ts-ignore
 // forDataTree(list);
 
 // @ts-ignore
 // function forDataTree(data) {
-//   // @ts-ignore
-//   let parents = data.filter((p) => p.fatherId === "0"),
-//     // @ts-ignore
-//     children = data.filter((c) => c.fatherId !== "0");
-//   dataTree(parents, children);
-//   console.log(parents, "000000");
-//   function dataTree(parents, children) {
-//     parents.map((p) => {
-//       children.map((c) => {
-//         if (c.grade === p.fatherId) {
-//           let _children = JSON.parse(JSON.stringify(children));
-//           _children.splice(i,1)
-//           dataTree([c], _children);
-//           if (p.children) {
-//             p.children.push(c);
-//           } else {
-//             p.children = [c];
-//           }
-//         }
-//       });
-//     });
-//   }
+  // @ts-ignore
+  // let parents = data.filter((p) => p.fatherId === "0"),
+    // @ts-ignore
+  //   children = data.filter((c) => c.fatherId !== "0");
+  // dataTree(parents, children);
+  // function dataTree(parents, children) {
+  //   parents.map((p) => {
+  //     children.map((c,i) => {
+  //       if (c.grade === p.fatherId) {
+  //         let _children = JSON.parse(JSON.stringify(children));
+  //         _children.splice(i,1)
+  //         dataTree([c], _children);
+  //         if (p.children) {
+  //           p.children.push(c);
+  //         } else {
+  //           p.children = [c];
+  //         }
+  //       }
+  //     });
+  //   });
+  // console.log(parents,children, "000000");
+
+  // }
 // }
