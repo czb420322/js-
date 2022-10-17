@@ -1,0 +1,293 @@
+vue项目使用echarts
+(1)vue2项目配置使用echarts
+//main.js
+// 引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts 
+(2)给定的容器的大小，echarts初始化应在钩子函数mounted()中，这个钩子函数是在el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用；
+(3)echarts的具体的配置项：
+    <div ref="drawLineContentTrend"
+     v-loading="loading.pie"
+     element-loading-text="数据加载中"
+     element-loading-background="#f6f8ff"
+     id="content"
+     :style="{ height: '320px' }"></div>
+    this.barChart = this.$echarts.init(document.getElementById("drawLineContentTrend"));
+    this.barChart.setOption({
+      backgroundColor:"",
+      color:"",
+      title:{
+      },
+      tooltip:{
+      },
+      toolbox:{
+      },
+      legend:{
+      },
+      grid:{
+      },
+      xAxis:{
+      },
+      yAxis:{
+      },
+      series:{
+      },
+    })
+(4)一般设置样式都是用的驼峰命名样式再设置即可，默认单位是px,设置时候不带单位,可以%,颜色设置可以是十六进制,也可以是rgb，rgba;
+(5)设置echarts的背景颜色:backgroundColor: "#FFFFFF";
+(6)默认色板:color: ["#4394FF", "#2B43DA", "#DB2293", "#AB74FF"]
+- 设置了后每一项图例的颜色会从色板里面取
+(7)图表标题设置:
+   title:'标题',
+   subtext:'副标题'，
+   show:true,//控制标题模块的显示和隐藏，默认true，
+   x: 'left', // 水平安放位置，默认为左对齐，可选为：
+             // 'center' ¦ 'left' ¦ 'right'
+             // ¦ {number}（x坐标，单位px）`
+    y: 'top', // 垂直安放位置，默认为全图顶端，可选为：
+          // 'top' ¦ 'bottom' ¦ 'center'
+          // ¦ {number}（y坐标，单位px）
+    backgroundColor: '#ADFADF'//标题背景色
+    borderColor: '#ccc', // 标题边框颜色
+    borderWidth: 0, // 标题边框线宽，单位px，默认为0（无边框）
+    padding: 5, // 标题内边距，单位px，默认各方向内边距为5，
+               // 接受数组分别设定上右下左边距，同css
+    itemGap: 10, // 主副标题纵向间隔，单位px，默认为10
+    textStyle: {
+    fontSize: 18,
+    fontWeight: 'bolder',
+    color: '#333',// 主标题文字颜色
+    .........类似驼峰命名样式即可
+    },
+    subtextStyle: {
+   同主标题
+    }
+(8)tooltip相关:
+   1.基础:
+show: true, // 是否显示
+trigger: 'axis', // 当trigger为'item'时只会显示该点的数据，为'axis'时显示该列下所有坐标轴所对应的数据。
+triggerOn: 'mousemove', // 触发时机默认mousemove 'mousemove'鼠标移动时触发。 
+                        //'click'鼠标点击时触发。 'mousemove|click'同时鼠标移动和点击时触发。 
+enterable: false, // 鼠标是否可进入提示框浮层中，默认为false，
+                  //如需详情内交互，如添加链接，按钮，可设置为 true。
+showDelay: 20, // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
+hideDelay: 100, // 隐藏延迟，单位ms
+transitionDuration : 0.4, // 动画变换时间，单位s
+borderRadius: 4, // 提示边框圆角，单位px，默认为4
+backgroundColor: '#FFFFFF', // 提示框浮层的背景颜色。
+borderColor: '#333', // 提示框浮层的边框颜色。
+borderWidth: 0, // 提示框浮层的边框宽。
+padding: 5, // 提示框浮层内边距，
+textStyle: { // 提示框浮层的文本样式。 
+    color: '#fff', 
+    fontStyle: 'normal', 
+    fontWeight: 'normal', 
+    fontFamily: 'sans-serif', 
+    fontSize: 14, 
+},
+extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);', // 额外附加到浮层的 css 样式,
+                                 //比如margin,opacity,甚至上面的padding那些也可以些这里
+------------------------------------------------------------------------------------------
+2.toolTip里展示数据处理或再插入一个图例：
+  1.展示数据处理（使用formatter）
+  formatter: "{a} <br/>{b} : {c} ({d}%)",
+  //a代表图例的名称 b代表选择属性的名称 c代表选择属性的值 d代表所占百分比
+  2.再插入一个图例
+//先在每个图例下再创建一个chart的canvas
+formatter: function(param) {
+    //传参选择图例的各个属性param
+    setTimeout(function() {
+    //接收参数和挂载echarts图例的dom节点
+    that.childRegByChart(param, "regChart");
+}, 100);
+    //定义一个挂载图例的div
+    var res = "<div style='width:320px;height:150px' id='regChart'></div>";
+    return res;
+}
+
+//条形图里嵌套饼图为例，生成饼图的方法
+childRegByChart(param, ele) {
+    this.childrenData = [];
+    for (let i in name) {
+        this.childrenData.push({
+            value: name[i].data,
+            name: name[i].seriesName
+    });
+    }
+    var myChart = this.$echarts.init(document.getElementById(ele));
+    myChart.setOption({
+       里面正常设置图例的属性和数据
+    })
+},  
+(9) echarts图表自带的刷新下载转换的功能：
+   toolbox: { //可视化的工具箱
+                show: true,
+                feature: {
+                    dataView: { //数据视图
+                        show: true
+                    },
+                    restore: { //重置
+                        show: true
+                    },
+                    dataZoom: { //数据缩放视图
+                        show: true
+                    },
+                    saveAsImage: {//保存图片
+                        show: true
+                    },
+                    magicType: {//动态类型切换
+                        type: ['bar', 'line']
+                    }
+                }
+            },
+(10)echarts的图例的legend属性设置
+    data:[],//数据
+    show: true, //是否显示
+type: "plain", // 图例的类型 'plain':普通图例 'scroll':可滚动翻页的图例
+zlevel: 1, // 所有图形的 zlevel 值。
+icon: "circle",//图里形状
+top: "5%", // bottom:"20%" // 组件离容器的距离
+right: "5%", //left:"10%" // // 组件离容器的距离
+width: "auto", // 图例组件的宽度,可以设置值，百分比数值都行
+height: "auto", // 图例组件的高度
+orient: "horizontal", // 图例列表的布局朝向。 'horizontal' 'vertical'
+align: "auto", // 图例标记和文本的对齐
+padding: 5, // 图例内边距
+itemWidth: 6, // 图例标记的图形宽度。
+itemGap: 20, // 图例每项之间的间隔。
+itemHeight: 14, // 图例标记的图形高度。
+symbolKeepAspect: true, // 如果图标（可能来自系列的 symbol 或用户自定义的 
+                  legend.data.icon）是 path:// 的形式，是否在缩放时保持该图形的长宽比。）
+selectedMode: true, // 图例选择的模式，
+inactiveColor: "#ccc", // 图例关闭时的颜色。
+textStyle: {
+    color: "#556677", // 文字的颜色。
+    fontStyle: "normal", // 文字字体的风格。
+    fontWeight: "normal", // 文字字体的粗细。 'normal' 'bold' 'bolder' 'lighter'
+     .........类似驼峰命名样式即可
+     rich: {
+         a: {
+            color: "red",
+            lineHeight: 10,
+         },
+         b: {
+            color: "#fff",
+            lineHeight: 10,
+         },//rich要结合formatter使用
+}
+formatter: function (name) {
+  对图例特殊展示的处理，样式则会使用textSty的rich样式
+  最后返回格式
+  return name + "{"+rich的属性+"|"+值+"}",该值就会用到rich里面的样式
+},
+(11)控制echarts的图表大小
+    x: 80,
+    y: 60,
+    x2: 80,
+    y2: 60,
+   // width: {totalWidth} - x - x2,
+   // height: {totalHeight} - y - y2,
+   backgroundColor: 'rgba(0,0,0,0)',
+    borderWidth: 1
+//设置图例本身相关的，可以数值或百分比
+(12)控制图标的横纵坐标的设置
+  name:"坐标轴类别名"
+position: 'bottom', // 位置
+nameLocation: 'end', // 坐标轴名字位置，支持'start' | 'end'
+boundaryGap: true, // 类目起始和结束两端空白策略
+nameTextStyle: { //坐标轴类别名设置，比如人（每次）
+    color: "#505B85",
+    fontSize: 12
+},
+textStyle: { //坐标轴文字设置
+    color: "#505B85", //更改坐标轴文字颜色
+    fontSize: 14 //更改坐标轴文字大小
+
+}
+axisLine: { // 坐标轴线
+        show: true, // 默认显示，属性show控制显示与否
+        lineStyle: { // 属性lineStyle控制线条样式
+        color: '#48b',
+        width: 2,
+        type: 'solid'
+    }
+},
+axisTick: { // 坐标轴刻度
+        show: true, // 属性show控制显示与否，默认不显示
+        inside : false, // 控制小标记是否在grid里
+        length :5, // 属性length控制线长
+        lineStyle: { // 属性lineStyle控制线条样式
+        color: '#333',
+        width: 1
+    }
+},
+axisLabel: { //每一个坐标的文字
+        show: true,
+        textStyle: { // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+            color: '#333'
+        },
+        //控制坐标轴标签怎么显示
+        interval: (*index*, *value*) => {
+                *//具体逻辑判断，比如只取带有月字的*
+                if (value.indexOf("月") !== -1) return true;
+                return false;
+            },
+        },
+splitLine: { // 分隔线
+    show: true, // 默认显示，属性show控制显示与否`
+    lineStyle: {
+        color: ['#ccc'],
+        width: 1,
+        type: 'solid'
+    }
+
+},
+splitArea: { // 分隔区域
+        show: false, // 默认不显示，属性show控制显示与否
+        areaStyle: { // 属性areaStyle（详见areaStyle）控制区域样式
+        color: ['rgba(250,250,250,0.3)','rgba(200,200,200,0.3)']
+    }
+}
+(13)echarts的图表格的设置：
+//最后这里面主要控制以什么形态展示，展示数据等等一些
+name:"名称"
+type："pie"//pie,bar,lines等
+data:[]//数据
+color: "#2B43DA",//颜色
+(14)实际开发遇到的问题：
+  1.There is a chart instance already initialized on the dom.
+
+原因：在vue中将echarts绑定到vue原型中，相当于在vue原型里封装了一个创建echarts方法，所以每次调用该方法时候创建的图表使用的dom节点都会是同一个，就会在控制台报警告。
+
+解决：先调用`echarts.getInstanceByDom()`方法判断是否已经存在echarts实例，如果不存在再去初始化。
+代码实现：
+this.myChart = this.$echarts.getInstanceByDom(document.getElementById("drawLineContentTrendTwo"));
+
+      if (this.myChart == null) {
+
+        // 如果不存在，就进行初始化
+
+        this.myChart = this.$echarts.init(document.getElementById("drawLineConten      tTrendTwo"));
+
+      }
+------------------------------------- -------------------------------------
+2.echarts series not exists. Legend data should be same with series name or data name
+
+原因：legend的name名称和series的的name值不匹配
+
+解决：检查legend的data值与series的name匹配即可
+------------------------------------- -------------------------------------
+3.echarts注销
+
+解决：this.myChart.clear();
+------------------------------------- -------------------------------------
+4.在vue里将echarts封装至组件在一个页面通过v-show显示隐藏多个，两个图标设置的样式属性会互相影响
+
+解决：使用v-if；
+
+5.Cannot read properties of null (reading 'getAttribute')
+原因：在两个页面都有echarts实例时候，其中一个页面的数据接口没调通，实例还没有生成就切换了页面，导致生产      实例后找不到dom节点
+解决：先判断页面是否存在该节点再选择将实例绑在dom上，例如
+     if (!this.$refs.drawLineContentTrend) {
+        return;
+     }
