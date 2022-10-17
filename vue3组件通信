@@ -1,0 +1,180 @@
+1.vue3新的组件的通信的第一种方式的单向数据流的传递方式props的方法主要有基本数据的类型的传递和引用的数据类型的传递，数据的流通指向的过程中，一定要注意数据定义的方式以及用到关键的属性的defineProps的使用类似于v2的props的数据的定义的方法；
+// Parent.vue
+<template>
+  <!-- 使用子组件 -->
+  <Child :msg="message" />
+</template>
+
+<script setup>
+import Child from './components/Child.vue' // 引入子组件
+
+let message = '雷猴'
+</script>
+// Child.vue
+
+<template>
+  <div>
+    {{ msg }}
+  </div>
+</template>
+
+<script setup>
+
+const props = defineProps({
+  msg: {
+    type: String,
+    default: ''
+  }
+})
+
+console.log(props.msg) // 在 js 里需要使用 props.xxx 的方式使用。在 html 中使用不需要 props
+
+</script>
+2.vue3新的组件的通信的第二种方式的逆向传输emit的方式这是一种逆向传输的方式，页面的组织结构的相互嵌套，子组件通过自定义事件方法defineEmits的方式自定义['事件方法名称']的形式，然后在父组件的页面的dom元素通过自定义事件触发这个事件，达到修改父元素的事件的元素的数据；
+// Parent.vue
+
+<template>
+  <div>父组件：{{ message }}</div>
+  <!-- 自定义 changeMsg 事件 -->
+  <Child @changeMsg="changeMessage" />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import Child from './components/Child.vue'
+
+let message = ref('雷猴')
+
+// 更改 message 的值，data是从子组件传过来的
+function changeMessage(data) {
+  message.value = data
+}
+</script>
+
+// Child.vue
+
+<template>
+  <div>
+    子组件：<button @click="handleClick">子组件的按钮</button>
+  </div>
+</template>
+
+<script setup>
+
+// 注册一个自定义事件名，向上传递时告诉父组件要触发的事件。
+const emit = defineEmits(['changeMsg'])
+
+function handleClick() {
+  // 参数1：事件名
+  // 参数2：传给父组件的值
+  emit('changeMsg', '鲨鱼辣椒')
+}
+
+</script>
+3.vue3新组件的通信的第三种方式的单向和逆向的双向的方式的数据的流向，子组件的元素的数据通过defineExpose向外暴露出来，父组件的元素在子组件的元素上面通过ref去定义使用子组件定义的单元数据元素，达到父组件调用子组件的数据和方法的双向元素的流向的方式；
+// Parent.vue
+
+<template>
+  <div>父组件：拿到子组件的message数据：{{ msg }}</div>
+  <button @click="callChildFn">调用子组件的方法</button>
+
+  <hr>
+
+  <Child ref="com" />
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import Child from './components/Child.vue'
+
+const com = ref(null) // 通过 模板ref 绑定子组件
+
+const msg = ref('')
+
+onMounted(() => {
+  // 在加载完成后，将子组件的 message 赋值给 msg
+  msg.value = com.value.message
+})
+
+function callChildFn() {
+  // 调用子组件的 changeMessage 方法
+  com.value.changeMessage('蒜头王八')
+
+  // 重新将 子组件的message 赋值给 msg
+  msg.value = com.value.message
+}
+</script>
+// Child.vue
+
+<template>
+  <div>子组件：{{ message }}</div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('蟑螂恶霸')
+
+function changeMessage(data) {
+  message.value = data
+}
+
+//使用 defineExpose 向外暴露指定的数据和方法
+defineExpose({
+  message,
+  changeMessage
+})
+
+</script>
+4.vue3新组件的通信的第四种方式的祖孙的数据传输方式的流向：父组件定义数据元素，通过provide方式传送数据，子组件通过inject()接受数据，在子组件展示，父子组件嵌套的层级不管几层，都可以接收到父组件的数据和方法，这要特别注意的是使用readonly可以让子组件无法直接修改，需要调用provide往下传的方法来修改，不能直接去修改父组件传递的元素数据去修改，这样是无法修改的。
+// Parent.vue
+
+<template>
+  <Child></Child>
+</template>
+
+<script setup>
+import { ref, provide, readonly } from 'vue'
+import Child from './components/Child.vue'
+
+const name = ref('猛虎下山')
+const msg = ref('雷猴')
+
+// 使用readonly可以让子组件无法直接修改，需要调用provide往下传的方法来修改
+provide('name', readonly(name))
+
+provide('msg', msg)
+
+provide('changeName', (value) => {
+  name.value = value
+})
+</script>
+
+// Child.vue
+
+<template>
+  <div>
+    <div>msg: {{ msg }}</div>
+    <div>name: {{name}}</div>
+    <button @click="handleClick">修改</button>
+  </div>
+</template>
+
+<script setup>
+import { inject } from 'vue'
+
+const name = inject('name', 'hello') // 看看有没有值，没值的话就适用默认值（这里默认值是hello）
+const msg = inject('msg')
+const changeName = inject('changeName')
+
+function handleClick() {
+  // 这样写不合适，因为vue里推荐使用单向数据流，当父级使用readonly后，这行代码是不会生效的。没使用之前才会生效。
+  // name.value = '雷猴'
+
+  // 正确的方式
+  changeName('虎躯一震')
+
+  // 因为 msg 没被 readonly 过，所以可以直接修改值
+  msg.value = '世界'
+}
+</script>
