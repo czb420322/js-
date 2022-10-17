@@ -1,0 +1,101 @@
+学习lodash的方法：
+(1).chunk()方法：数组切割把一个数组分成自定义的长度的一个数组：
+      let arr =[1,2,3,4];
+      let newArr = _.chunk(arr,2)//[[1,2],[3,4]]
+(2).compact()方法：数组去除未定义，空值，以及undefiend的数组的值
+     let arr  =[1,2,NaN,undefiend,'',0];
+     let newArr = _.compact(arr)//[1,2,0]
+(3).uniq()数组的去重
+     let arr =[1,1,2,2,5,3,1,2,5]
+     let newArr =_.uniq(arr)//[1,2,3,5]
+(4).reject()根据数组的条件去除
+var arr=[
+    {id:0,name:"阿布"，age:23},
+    {id:1,name:"黑肉"，age:30},
+]     
+var newArr =_.reject(arr,['id',1])//[ {id:0,name:"阿布"，age:23}]
+(5).shuffle()数组乱序
+     let arr =[1,2,3,4];
+     let newArr = _.shuffle(arr,2)//[1，4，2，3 ]]
+(6).pick()筛选出一个对象中需要的属性
+    var arr={id:0,name:"阿布"，age:23},
+    var newArr=_.pick(arr,['name',age])//{name:"阿布"，age:23}
+(7).keys()以数组的方法发得到一个对象中所有的属性名称；   
+    var arr={id:0,name:"阿布"，age:23},
+    var newArr = _keys(arr)//['id','name','age']
+(8).cloneDeep()深度克隆
+    var arr ={id:0,name:"阿布",keys:{age:23,height:175,student:"1222222"}}
+    var newArr =_.cloneDeep(arr)
+    arr.name="黑肉"
+(9).forEach()遍历数组的值
+    var obj ={
+        name:"阿布",
+        age:18,
+        height:175
+    }
+   _.forEach(obj,(key,val)=>{
+     console.log(key,val)
+   })
+(10).merge()参数的合并
+    var obj1 ={
+        a:[{b:1},{c:2}]
+    }
+    var obj2={
+        a:[{e:3},{d:4}]
+    }
+    var sumObj =_.merge(obj1,obj2)//{a:[{b:1},{c:2},{e:3},{d:4}]}
+(11).random()随机的自然数和小数的获取
+    var num =_.random(10,20)  
+    var floatNum =_.random(10,20,true)  
+(12).sample获取随机的一个元素
+    var arr =['我是第一个元素','我是第二个元素'];
+    var str =_.sample(arr,1)
+(13).find()根据条件获取元素
+    var obj=[
+        {id:0,name:"阿布",age:23},
+        {id:1,name:"黑肉",age:30}
+    ]    
+    var newObj =_.find(obj,["id":0])
+(14)keyBy()根据key值将数组转化为对象；
+    var arr =[
+        {id:0,name:"阿布",age:23},
+        {id:1,name:"黑肉",age:30}
+    ]    
+    var newArr = _.keyBy(arr,'name')//{"阿布":{{id:0,name:"阿布",age:23}},"黑肉":{ {id:1,name:"黑肉",age:30}}}
+(15)filter()根据条件过滤数组  
+       var arr =[
+        {id:0,name:"阿布",age:23},
+        {id:1,name:"黑肉",age:30}
+    ] 
+    var newArr =_.filter(arr,['name',"阿布])
+    var arrs =[
+        {
+            id:0,
+            age:18,
+            name:"阿布",
+            change:false
+        },{
+            id:1,
+            age:19,
+            name:"黑肉",
+            change:true
+        }
+    ]
+    var newArrs = _.filter(arrs,["change",true])//符合条件的结果
+(16).map()数组的循环
+     var arr =[
+        {
+            id:0,
+            age:18,
+            name:"阿布"
+        },{
+            id:1,
+            age:19,
+            name:"黑肉"
+        }
+    ]
+    var newArr = _.map(arr,"name")//打印属性的数值
+(17).flatten()
+  var arr = [1,[2,3,[6,7,8,9],4,5]]
+  var newArr = _.flatten(arr)//降低一个维度
+  var newArs = _.flattenDeep()//直接转为一维数组
