@@ -1,0 +1,36 @@
+vue3的全局的数据状态管理有以下几个部分:
+1.重置数据的初始状态:定义的全局的数据变量的id的名称.$rest(),可以快速的回复设置的全局数据的初始值;
+import { mainStore } from '../store';//全局引入
+const store = mainStore() //变量定义接收
+ store.$reset()//方法使用
+2.修改设置的全局的数据的状态的第一种方法,全局定义的数据的变量的名称.需要修改的数据的变量可以直接修改初始设置的数据;
+store.count++//直接在全局定义的数据修改
+3.遇到大批量的修改全局的数据的状态的第二种方法:全局定义的数据的变量的名称.$patch({
+    里面是需要修改的数据的变量的名称;
+})
+store.$patch({
+        count: store.count++,
+        helloWorld: store.helloWorld == 'Hello World!' ? '123' : "456"
+    })
+4.修改多个全局的数据的状态的第三种方法:全局定义的数据的名称.$patch((state)=>{
+    设置state,直接state.修改的数据变量的名称,之间额进行修改数据名称的变量;
+})
+store.$patch((state)=>{
+        state.count++,
+        state.helloWorld == 'Hello World!' ? '123' : "456"
+    })
+
+5.修改全局的数据的状态的第四种方法:舍弃以往的mutations的方法,直接在actions里面写需要修改数据的方法,在需要使用的地方,直接全局定义的数据变量的名称.actions里面的修改数据的方法就可以进行同步的修改;
+ //store的方法
+  actions: {
+    changeState() {
+      this.count += 2;
+      this.helloWorld = "fggfhghegfhg!!!!!!!!!!";
+    },
+    getList(){
+        console.log(jsPangStore().list)
+        this.oldData="123456"
+    }
+  },
+//修改全局定义的变量：
+ store.changeState()
