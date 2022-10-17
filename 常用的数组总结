@@ -1,0 +1,195 @@
+1.forEach
+
+  forEach() 方法为每个数组元素执行一次提供的函数。 
+
+  const array1 = ['a', 'b', 'c']; array1.forEach(element =>      		console.log(element)); 
+
+  // expected output: "a" 
+
+  // expected output: "b" 
+
+  // expected output: "c"
+
+2.map
+
+ Array.map() 方法允许您遍历数组并使用回调函数修改其元素。然后将在数组的 每个元素上执行回调函数。
+
+ let arr = [3, 4, 5, 6];
+
+ let modifiedArr = arr.map(function(element){ return element *3; });
+
+ console.log(modifiedArr); // [9, 12, 15, 18]
+
+3.concat
+
+​    concat() 是一个字符串方法，用于将字符串连接在一起。 concat() 方法将一个或多个字符串值附加到 调用字符串，然后将连接的结果作为新 字符串返回。
+
+const array1 = ['a', 'b', 'c']; 
+
+const array2 = ['d', 'e', 'f']; 
+
+const array3 = array1.concat(array2); 
+
+console.log(array3); // expected output: Array ["a", "b", "c", "d", "e", "f"]
+
+4.push
+
+  push() 方法将给定元素附加到数组的最后一个并返回新数组的长 度。
+
+  const countries = ["Nigeria", "Ghana", "Rwanda"];   
+
+ countries.push("Kenya");
+
+ console.log(countries);//["Nigeria","Ghana","Rwanda","Kenya"]
+
+5.pop
+  pop() 方法从数组中删除最后一个元素并将该值返回给调用者。如果你在一个空数组上调用 pop()，它会返回 undefined。
+  const plants = ['broccoli', 'cauliflower', 'cabbage', 'kale','tomato'];
+  console.log(plants.pop());// expected output: "tomato"
+  console.log(plants);// expected output: Array ["broccoli", "cauliflower","cabbage","kale"]
+
+6.splice() 
+  在数组的指定位置删除、替换或添加元素来更改数组的内容  
+  const fruits = ["Banana", "Orange", "Apple", "Mango"];
+  fruits.splice(2, 0, "Lemon", "Kiwi");
+  //Banana,Orange,Lemon,Kiwi,Apple,Mango
+
+7.slice() 
+   从开始到结束（不包括结束）选择的新数组对象中，其中开始和结束表示该数组中项目的索引。原始数组不会被修改。
+  const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+  console.log(animals.slice(2));
+  // expected output: Array ["camel", "duck", "elephant"]
+  console.log(animals.slice(2, 4));
+  // expected output: Array ["camel", "duck"]
+
+8.shift() 
+  数组中删除第一个元素
+  const array1 = [1, 2, 3];
+  const firstElement = array1.shift();
+  console.log(array1);
+  // expected output: Array [2, 3]
+  console.log(firstElement);
+  // expected output: 1
+
+9.unshift()
+  数组中定值插入到类数组对象的开头
+  const array1 = [1, 2, 3];
+  console.log(array1.unshift(4, 5));
+  // expected output: 5
+  console.log(array1);
+  // expected output: Array [4, 5, 1, 2, 3]
+
+10.join()
+  数组的所有元素来创建并返回新字符串。join() 方法将数组的项连接到字符串中并返回该字符串。指定的分隔符,将分隔元素数组。默认分隔符是逗号 (,)。  
+  const elements = ['Fire', 'Air', 'Water'];
+  console.log(elements.join());
+  // expected output: "Fire,Air,Water"
+  console.log(elements.join(''));
+  // expected output: "FireAirWater"
+  console.log(elements.join('-'));
+  // expected output: "Fire-Air-Water"
+
+11.every()
+  数组中的所有元素是否通过提供的函数实现的测试。它返回一个
+  布尔值。
+  const isBelowThreshold = (currentValue) => currentValue < 40;
+  const array1 = [1, 30, 39, 29, 10, 13];
+  console.log(array1.every(isBelowThreshold));
+  // expected output: true
+
+12.filter()
+  创建给定数组，过滤到给定数组中通过所提供函数实现的测试的元素。  
+  const words = ['spray', 'limit', 'elite', 'exuberant',
+  'destruction', 'present'];
+  const result = words.filter(word => word.length > 6);
+  console.log(result);
+  // expected output: Array ["exuberant", "destruction",
+  "present"]
+
+13.indexOf() 
+  数组中找到给定元素的第一个索引，如果不存在则返回-1;
+  const beasts = ['ant', 'bison', 'camel', 'duck', 'bison'];
+  console.log(beasts.indexOf('bison'));
+  // expected output: 1
+  // start from index 2
+  console.log(beasts.indexOf('bison', 2));
+  // expected output: 4
+  console.log(beasts.indexOf('giraffe'));
+  // expected output: -1
+
+14.reduce()
+  按顺序对数组的每个元素执行用户提供的“reducer”回调函数，传入
+  前一个元素的计算返回值
+  const array1 = [1, 2, 3, 4];
+  const initialValue = 0;
+  const sumWithInitial = array1.reduce(
+   (previousValue, currentValue) => previousValue +
+   currentValue,initialValue);
+  console.log(sumWithInitial) // 0 + 1 + 2 + 3 + 4
+
+15.reverse()
+  第一个数组元素现在成为最后一个，最后一个数组元素成为第一个  
+  const array1 = ['one', 'two', 'three'];
+  console.log('array1:', array1);
+  // expected output: "array1:" Array ["one", "two", "three"]
+  const reversed = array1.reverse();
+  console.log('reversed:', reversed);
+  // expected output: "reversed:" Array ["three", "two", "one"]
+  // Careful: reverse is destructive -- it changes the original
+  array.
+  console.log('array1:', array1);
+  // expected output: "array1:" Array ["three", "two", "one"]
+
+16.sort()
+  数组的元素进行就地排序，并返回对同一个数组的引用，该数组现在
+  已排序
+  const months = ['March', 'Jan', 'Feb', 'Dec'];
+  months.sort();
+  console.log(months);
+  // expected output: Array ["Dec", "Feb", "Jan", "March"]
+  const array1 = [1, 30, 4, 21, 100000];
+  array1.sort();
+  console.log(array1);
+  // expected output: Array [1, 100000, 21, 30, 4]
+
+17.toString()
+  返回一个表示对象的字符串
+  function Dog(name) {
+    this.name = name;
+  }
+  const dog1 = new Dog('Gabby');
+  Dog.prototype.toString = function dogToString() {
+  return `${this.name}`;
+  };
+  console.log(dog1.toString());
+  // expected output: "Gabby"
+
+18.at()
+  接受一个整数值并返回该索引处的项目，允许正整数和负整数。负整数从
+数组中的最后一项开始倒数
+  const array1 = [5, 12, 8, 130, 44];
+  let index = 2;
+  console.log(`Using an index of ${index} the item returned is
+  ${array1.at(index)}`);
+  // expected output: "Using an index of 2 the item returned is
+  8"
+  index = -2;
+  console.log(`Using an index of ${index} item returned is
+  ${array1.at(index)}`);
+  // expected output: "Using an index of -2 item returned is 130"
+
+19.find() 
+  返回提供的数组中满足提供的测试功能的第一个元素。如果没有值满足
+  测试函数，则返回 undefined。
+  const array1 = [5, 12, 8, 130, 44];
+  const found = array1.find(element => element > 10);
+  console.log(found);
+  // expected output: 12
+
+20.some()  
+   数组中找到所提供函数为其返回 true 的元素，则返回 true；否则返回false。
+   const array = [1, 2, 3, 4, 5];
+   // checks whether an element is even
+   const even = (element) => element % 2 === 0;
+   console.log(array.some(even));
+   // expected output: true
